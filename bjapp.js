@@ -3,6 +3,12 @@ $(document).ready(function(){
 /////////here are the objects for the player and the dealer
 //player has functions for money lost money gained and to see what the hand value u is 
 //dealer just has a function for its hand value
+// dummy array for testing
+
+
+	var dummyDeck = [2,3,4,5,6,7,8,9,10,11,2,3,4,5,6,7,8,9,10,11];
+
+
 	var player = {
 		name: "player",
 		money: 200,
@@ -13,36 +19,42 @@ $(document).ready(function(){
 		gain: gainMoney = function(gain){
 			player.money = player.money + gain;
 		},
-		currentHand: hand = [],
-		gethandVal: 
-		handVal = function(){
-			sum = 0
-			for (var i = 0; i < hand.length; i++) {
-				sum += hand[i];
-				}
-			return sum;	
+		currentHand: 	
+			getHand = function(){
+				var num = Math.floor(Math.random()*19 );
+				var hand = dummyDeck.splice(num,2);
+				console.log(hand);
+				$("#pcards").html(hand[0] + " ," + hand[1]);
 			},
-		handValue: 	handVal(),	
-		handsWon: 0,
-		handsLoss: 0
+		// gethandVal: 
+		// 	handVal = function(){
+		// 		getHand();
+		// 		sum = 0
+		// 		for (var i = 0; i < hand.length; i++) {
+		// 			sum += hand[i];
+		// 			}
+		// 		return sum;	
+		// 	},
+		// handValue: 	handVal(),	
+		// handsWon: 0,
+		// handsLoss: 0
 	}
+
+	//===========================================================
 	var dealer = {
 		name: "dealer",
-		currentHand: hand = [],
-		gethandVal: 
-		handVal = function(){
-			sum = 0
-			for (var i = 0; i < hand.length; i++) {
-				sum += hand[i];
-				}
-			return sum;	
-		},
-		handValue: 	handVal(),		
+		currentHand: 	
+			getHand1 = function(){
+				var num = Math.floor(Math.random()*17 );
+				var hand = dummyDeck.splice(num,2);
+				console.log(hand);
+				$("#dcards").html(hand[0] + " ," + hand[1]);
+			},
+		
 		handsWon: 0,
 		handsLoss: 0
 	};
 
-	var dummyDeck = [2,3,4,5,6,7,8,9,10,11,2,3,4,5,6,7,8,9,10,11];
 
 //////////////////////////////////////
 // the star function begins and invokes the setBet function
@@ -73,28 +85,17 @@ $(document).ready(function(){
 	var submitBet = function(){
 		$("#submit").click(function(){
 			player.currentBet = $("#bet").val();
-			console.log(player.currentBet);
+			
 			deal();
 		})
 	}
-// this will change later because of dummy deck
-//takes values out of dummy deck then puts them in player/dealer nad array
-	var deal = function(){
-		var num = Math.floor(Math.random()*19 );
-		var hand = dummyDeck.splice(num,2);
-		player.hand = hand;
-		var num = Math.floor(Math.random()*17 );
-		var hand = dummyDeck.splice(num,2);
-		dealer.hand = hand;
-		$("#bet").remove();
-		$("#submit").remove();
-		console.log(dummyDeck);
-		console.log(player.hand);
-		console.log(dealer.hand);
-
-
-	}
-
+// takes functions from player and dealer to get their frst two cards
+var deal = function(){
+	$("#bet").remove();
+	$("#submit").remove();
+	 getHand();
+	 getHand1();
+}
 
 
 
@@ -105,7 +106,36 @@ $(document).ready(function(){
 
 
 
-
-
-
 })
+
+
+//Scrap
+
+// this will change later because of dummy deck
+//takes values out of dummy deck then puts them in player/dealer nad array
+	// var deal = function(){
+		// var num = Math.floor(Math.random()*19 );
+		// var hand = dummyDeck.splice(num,2);
+	// 	player.currentHand = hand;
+	// 	var num1 = Math.floor(Math.random()*17 );
+	// 	var hand1 = dummyDeck.splice(num1,2);
+	// 	dealer.currentHand = hand;
+		// $("#bet").remove();
+		// $("#submit").remove();
+	// 	$("#dcards").html(hand1[0] + hand1[1]);
+	// 	$("#pcards").html(hand[0] + hand[1]);
+	// 	// console.log(dummyDeck);
+	// 	// console.log(player.currentHand);
+	// 	// console.log(dealer.currentHand);
+
+	// }
+		// currentHand: ,
+		// gethandVal: 
+		// handVal = function(){
+		// 	sum = 0
+		// 	for (var i = 0; i < hand.length; i++) {
+		// 		sum += hand[i];
+		// 		}
+		// 	return sum;	
+		// },
+		// handValue: 	handVal(),	
