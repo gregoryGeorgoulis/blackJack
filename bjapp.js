@@ -111,8 +111,7 @@ $(document).ready(function(){
 
 /////the set bet function adds a drop list and a sumit button, removes the start button
 //and invokes submitBet function
-	var setBet = function(){
-			
+	var setBet = function(){			
 		var $select = $("<select></select>");
 		$select.attr("id","bet");
 		$select.append($("<option>5</option>"));
@@ -131,8 +130,7 @@ $(document).ready(function(){
 		if (player.money > 0) {
 			$("#submit").click(function(){
 			player.currentBet = $("#bet").val();
-			$("h2").html(player.currentBet);
-			
+			$("h2").html(player.currentBet);			
 			deal();
 			})
 		}
@@ -171,10 +169,8 @@ $(document).ready(function(){
 			var one = $("#pcards").html();
 			var hand1 = hand[0].value;
 			player.handValue += hand1;
-
-			
-			// console.log(player.handValue);
-			$("#pcards").html(one + " ," + hand[0].value);
+			var img = $("<img />",{src:hand[0].pic, width:75, height:100});
+			$("#pcards").append(img);
 			if (player.handValue > 21) {
 				$("#hitMe").unbind("click");
 				alert(" so sorry, you bust");
@@ -208,7 +204,8 @@ $(document).ready(function(){
 		var one = $("#dcards").html();
 		var hand1 = hand[0].value;
 		dealer.handValue += hand1;
-		$("#dcards").html(one + " ," + hand[0].value);
+		var img = $("<img />",{src:hand[0].pic, width:75, height:100});	
+		$("#dcards").append(img);
 	}
 		if (dealer.handValue > 21) {	
 				alert("dealer bust yesssssssaahhhh");	
