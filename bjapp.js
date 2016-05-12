@@ -36,8 +36,9 @@ $(document).ready(function(){
 		{name:"9",value:9,pic:"pcf/pc/png/9s.png"},{name:"10",value:10,pic:"pcf/pc/png/10s.png"},
 		{name:"jack",value:10,pic:"pcf/pc/png/js.png"},{name:"queen",value:10,pic:"pcf/pc/png/qs.png"},
 		{name:"king",value:10,pic:"pcf/pc/png/ks.png"},
-	]		
-	
+	]	
+	// miky holds the face down dealer card image	
+	var miky =["pcf/pc/png/mik.png"];
 
 	var player = {
 		name: "player",
@@ -52,59 +53,54 @@ $(document).ready(function(){
 			player.money = theMoney + gain;
 		},
 		currentHand: 	
+		//this  function selects two cards from the deck array and puts them in the players hand
+		// it does this by selcetion a random number which i get by num and then splicing two cards out
 			getHand = function(){
-				var num = Math.floor(Math.random()*50 );
+				var num = Math.floor(Math.random()*30 );
 				var hand = deck.splice(num,2);
 				console.log(hand);
 				var hand1 = hand[0].value;
 				var hand2 = hand[1].value;
 				player.handValue += hand1 + hand2;
-				// console.log(player.handValue);
-				// console.log(hand);
 				$("#p1").attr("src",hand[0].pic);
 				$("#p1").css({'width' : '75px' , 'height' : '100px'});
 				$("#p2").attr("src",hand[1].pic);
 				$("#p2").css({'width' : '75px' , 'height' : '100px'});
-				// .html(hand[0].value + " ," + hand[1].value);
 			},
-			 handValue: 0
-	
+			 handValue: 0,
+			 handsWon: 0,
+			 handsLoss: 0
 	}
 
 	//===========================================================
 	var dealer = {
 		name: "dealer",
 		currentHand: 	
+		// this function is the same as the one in the player object but it uses the miky image instead of the card image 
+		// it also saves that cards image in flipcard so an use it later in dealer turn
 			getHand1 = function(){
-				var num = Math.floor(Math.random()*48 );
+				var num = Math.floor(Math.random()*30 );
 				var hand = deck.splice(num,2);
 				var hand1 = hand[0].value;
 				var hand2 = hand[1].value;
 				dealer.handValue += hand1 + hand2;
 				$("#d1").attr("src",hand[0].pic);
 				$("#d1").css({'width' : '75px' , 'height' : '100px'});
-				$("#d2").attr("src",hand[1].pic);
+				$("#d2").attr("src",miky[0]);
 				$("#d2").css({'width' : '75px' , 'height' : '100px'});
-				// console.log(hand);
-				// $("#dcards").html(hand[0].value + " ," + hand[1].value);
+				dealer.flipCard = hand[1].pic;
+				console.log(hand[1].pic)
 			},
-		handValue: 0,		
-		handsWon: 0,
-		handsLoss: 0
+		handValue: 0,	
+		flipCard:""		
 	};
-
-
 //////////////////////////////////////
 // the star function begins and invokes the setBet function
-
 	$("#start").click(function(){
 		// console.log("working");
 		$("#dealer").html("Dealer");
 		$("#player").html("Player");
 		$("#money").html("$" + player.money);
-
-		// var cards = deck[0].pic;
-		// $("#dcard").css("background-image",);
 		setBet();
 	})
 
@@ -114,6 +110,7 @@ $(document).ready(function(){
 		var $select = $("<select></select>");
 		$select.attr("id","bet");
 		$select.append($("<option>5</option>"));
+		$select.append($("<option>10</option>"));
 		$select.append($("<option>15</option>"));
 		$select.append($("<option>25</option>"));
 		$("#player").append($select);
@@ -135,35 +132,34 @@ $(document).ready(function(){
 		}
 	}
 // takes functions from player and dealer to get their frst two cards
+//then invokes the hit and stand functions
 	var deal = function(){
 		$("#bet").remove();
 		$("#submit").remove();
-		// console.log(dummyDeck);
 		 getHand();
 		 getHand1();
 		 addHit();
 		 addStand();
 	}
-
+	// adds a hit me button
 	var addHit = function(){
-		// console.log($("#pcards").html());
 		var hitB = $("<button>Hit Me</button>").attr("id","hitMe");
 		$("#hit").append(hitB);
 		hitPlayer();
-
 	}
+	//adds a stand button
 	var addStand = function(){
 		var standB = $("<button>stand</button>").attr("id","standMe");
 		$("#hit").append(standB);
 		standPlayer();
-
 	}
+	// this function is invoked by the hit me button when invoked it will add a card to the players hand and check if 
+	// the player has busted, it also limits the hit me button to 3 clicks
 	var hitPlayer = function(){
 		 var hitCounter = 0;	
-		 // console.log(player.currentBet);
 		$("#hitMe").click(function(){
 			hitCounter ++;
-			var num = Math.floor(Math.random()*45 );
+			var num = Math.floor(Math.random()*28 );
 			var hand = deck.splice(num,1);
 			var one = $("#pcards").html();
 			var hand1 = hand[0].value;
@@ -179,26 +175,26 @@ $(document).ready(function(){
 				$("#money").html(player.money);
 				nextHand();
 				dealerTurn();
-
 			}
 			if (hitCounter === 3) {
 				$("#hitMe").unbind("click");
 			}
 		})
 	}
-
+	// the stand button removes the hit me button and invokes the dealers turn
 	var standPlayer = function(){
 		$("#standMe").click(function(){
 			$("#hitMe").remove();
 			dealerTurn();
-		})
-
-		
+		})	
 	}
-
+// in the dealerturn function alot goes on... first it flips the card by taking the image i stored in flipCard 
+//earlier to relpace michelangelo, it alos hits for the deal using a while loop as long as the dealers hand value is
+//less then 17, it also checks if the dealer busts and gives out money
 	var dealerTurn = function(){
+		$("#d2").attr("src",dealer.flipCard);
 		while (dealer.handValue < 17){
-		var num = Math.floor(Math.random()*40 );
+		var num = Math.floor(Math.random()*28 );
 		var hand = deck.splice(num,1);
 		var one = $("#dcards").html();
 		var hand1 = hand[0].value;
@@ -211,14 +207,13 @@ $(document).ready(function(){
 				var gain = parseInt(player.currentBet);
 				gainMoney(gain);
 				alert("+ $" + player.currentBet);
-				$("#money").html("$",player.money);	
+				$("#money").html("$"+player.money);	
 				 nextHand();	
 			}
-		// console.log(dealer.handValue);
 		checkWinner();
 		checkLoser();
 	}
-
+	// this function analyzes the card values to tell if the player has won and if player has won then he get money
 	var checkWinner = function(){
 		if( player.handValue < 22 && dealer.handValue < 22){
 			if (player.handValue > dealer.handValue) {
@@ -226,7 +221,6 @@ $(document).ready(function(){
 			gainMoney(gain);
 			alert("+ $" + player.currentBet);
 			$("#money").html("$"+player.money);
-			// console.log(player.money);
 			nextHand();
 			}else if (dealer.handValue > 21) {
 			gainMoney(gain);
@@ -237,10 +231,9 @@ $(document).ready(function(){
 				alert("push");
 				nextHand();
 			}
-		}
-		
+		}		
 	}
-
+	// this function analyzes the card values to see if the player has lost if player lost then takes money 
 	var checkLoser = function(){
 		if( player.handValue < 22 && dealer.handValue < 22){
 			if (player.handValue < dealer.handValue) {
@@ -248,21 +241,20 @@ $(document).ready(function(){
 			loseMoney(loss);
 			alert("- $" + player.currentBet);
 			$("#money").html("$"+player.money);
-			// console.log(player.money);
 			nextHand();
 			}
 		}	
 	}	
-
+	// makes a next hand button while removing hit me and stand buttons
 	var nextHand = function(){
-		// console.log("working");
 		$("#hitMe").remove();
 		$("#standMe").remove();
 		var nextB = $("<button>next hand</button>").attr("id","next");
 		$("#hit").append(nextB);
 		newHand();
 	}
-	
+	// this function whipes the board of images and clears the players and dealers handvalues
+	// it also reinvokes the set bet function so a new hand can be played
 	var newHand = function(){
 		$("#next").click(function(){
 			$("#p1").removeAttr("src");
@@ -271,20 +263,12 @@ $(document).ready(function(){
 			$("#d2").removeAttr("src");
 			$(".hit").remove();
 			$("h2").html("");
-			// $("#pcards").html("");
-			// $("#dcards").html("");
 			player.handValue = 0;
 			dealer.handValue = 0;
 			setBet();
 			$("#next").remove();
-
 		})
-
 	}
-
-
-
-
 
 })
 
