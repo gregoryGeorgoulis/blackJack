@@ -36,7 +36,6 @@ $(document).ready(function(){
 		{name:"9",value:9,pic:"pcf/pc/png/9s.png"},{name:"10",value:10,pic:"pcf/pc/png/10s.png"},
 		{name:"jack",value:10,pic:"pcf/pc/png/js.png"},{name:"queen",value:10,pic:"pcf/pc/png/qs.png"},
 		{name:"king",value:10,pic:"pcf/pc/png/ks.png"},
-
 	]		
 	
 
@@ -46,7 +45,7 @@ $(document).ready(function(){
 		currentBet: 0 ,
 		loss: loseMoney = function(loss){
 			var theMoney = parseInt(player.money);
-			player.money = theMoney - loss;
+			player.money =  theMoney - loss;
 		},
 		gain: gainMoney = function(gain){
 			var theMoney = parseInt(player.money);
@@ -54,9 +53,9 @@ $(document).ready(function(){
 		},
 		currentHand: 	
 			getHand = function(){
-				var num = Math.floor(Math.random()*20 );
+				var num = Math.floor(Math.random()*50 );
 				var hand = deck.splice(num,2);
-				// console.log(hand);
+				console.log(hand);
 				var hand1 = hand[0].value;
 				var hand2 = hand[1].value;
 				player.handValue += hand1 + hand2;
@@ -77,7 +76,7 @@ $(document).ready(function(){
 		name: "dealer",
 		currentHand: 	
 			getHand1 = function(){
-				var num = Math.floor(Math.random()*18 );
+				var num = Math.floor(Math.random()*48 );
 				var hand = deck.splice(num,2);
 				var hand1 = hand[0].value;
 				var hand2 = hand[1].value;
@@ -100,9 +99,9 @@ $(document).ready(function(){
 
 	$("#start").click(function(){
 		// console.log("working");
-		$("#dealer").html("dealer");
-		$("#player").html("player");
-		$("#money").html(player.money);
+		$("#dealer").html("Dealer");
+		$("#player").html("Player");
+		$("#money").html("$" + player.money);
 
 		// var cards = deck[0].pic;
 		// $("#dcard").css("background-image",);
@@ -130,7 +129,7 @@ $(document).ready(function(){
 		if (player.money > 0) {
 			$("#submit").click(function(){
 			player.currentBet = $("#bet").val();
-			$("h2").html(player.currentBet);			
+			$("h2").html("$"+player.currentBet);			
 			deal();
 			})
 		}
@@ -164,12 +163,12 @@ $(document).ready(function(){
 		 // console.log(player.currentBet);
 		$("#hitMe").click(function(){
 			hitCounter ++;
-			var num = Math.floor(Math.random()*16 );
+			var num = Math.floor(Math.random()*45 );
 			var hand = deck.splice(num,1);
 			var one = $("#pcards").html();
 			var hand1 = hand[0].value;
 			player.handValue += hand1;
-			var img = $("<img />",{src:hand[0].pic, width:75, height:100});
+			var img = $("<img />",{src:hand[0].pic,class:"hit", width:75, height:100});
 			$("#pcards").append(img);
 			if (player.handValue > 21) {
 				$("#hitMe").unbind("click");
@@ -199,12 +198,12 @@ $(document).ready(function(){
 
 	var dealerTurn = function(){
 		while (dealer.handValue < 17){
-		var num = Math.floor(Math.random()*13 );
+		var num = Math.floor(Math.random()*40 );
 		var hand = deck.splice(num,1);
 		var one = $("#dcards").html();
 		var hand1 = hand[0].value;
 		dealer.handValue += hand1;
-		var img = $("<img />",{src:hand[0].pic, width:75, height:100});	
+		var img = $("<img />",{src:hand[0].pic,class:"hit", width:75, height:100});	
 		$("#dcards").append(img);
 	}
 		if (dealer.handValue > 21) {	
@@ -212,8 +211,8 @@ $(document).ready(function(){
 				var gain = parseInt(player.currentBet);
 				gainMoney(gain);
 				alert("+ $" + player.currentBet);
-				$("#money").html(player.money);	
-				// nextHand();	
+				$("#money").html("$",player.money);	
+				 nextHand();	
 			}
 		// console.log(dealer.handValue);
 		checkWinner();
@@ -226,13 +225,13 @@ $(document).ready(function(){
 			var gain = parseInt(player.currentBet);
 			gainMoney(gain);
 			alert("+ $" + player.currentBet);
-			$("#money").html(player.money);
+			$("#money").html("$"+player.money);
 			// console.log(player.money);
 			nextHand();
 			}else if (dealer.handValue > 21) {
 			gainMoney(gain);
 			alert("+ $" + player.currentBet);
-			$("#money").html(player.money);
+			$("#money").html("$"+player.money);
 			nextHand();
 			}else if (player.handValue === dealer.handValue) {
 				alert("push");
@@ -248,7 +247,7 @@ $(document).ready(function(){
 			var loss = parseInt(player.currentBet);
 			loseMoney(loss);
 			alert("- $" + player.currentBet);
-			$("#money").html(player.money);
+			$("#money").html("$"+player.money);
 			// console.log(player.money);
 			nextHand();
 			}
@@ -266,9 +265,14 @@ $(document).ready(function(){
 	
 	var newHand = function(){
 		$("#next").click(function(){
+			$("#p1").removeAttr("src");
+			$("#p2").removeAttr("src");
+			$("#d1").removeAttr("src");
+			$("#d2").removeAttr("src");
+			$(".hit").remove();
 			$("h2").html("");
-			$("#pcards").html("");
-			$("#dcards").html("");
+			// $("#pcards").html("");
+			// $("#dcards").html("");
 			player.handValue = 0;
 			dealer.handValue = 0;
 			setBet();

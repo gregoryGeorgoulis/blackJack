@@ -1,10 +1,30 @@
+body{
+	background-color: black;
+}
 #container{
-	height: 650px;
+	margin-left: 165px;
+	height: 550px;
 	width: 800px;
-	background-color: green;
+	background-color: #4CAF50;
+	text-align: center;
+	border: 20px solid #3E2723;
+	border-radius: 50px 50px 50px 50px;
+
+}
+h1{
+	width: 850px;
+	margin: 0 auto;
+	border: 10px solid #FBC02D;
+	background-color: #FFEB3B;
+	text-align: center;
+	font-family: 'Rock Salt', cursive;
 }
 #dcard{
 	color:white;
 	height: 10px;
 	width:20px;
+}
+p{
+	font-family: 'Pacifico', cursive;
+	font-size: 20px;
 }
