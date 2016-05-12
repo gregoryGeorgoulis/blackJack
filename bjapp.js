@@ -254,7 +254,7 @@ $(document).ready(function(){
 		newHand();
 	}
 	// this function whipes the board of images and clears the players and dealers handvalues
-	// it also reinvokes the set bet function so a new hand can be played
+	// it also reinvokes the set bet function so a new hand can be player
 	var newHand = function(){
 		$("#next").click(function(){
 			$("#p1").removeAttr("src");
