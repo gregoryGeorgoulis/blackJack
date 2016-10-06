@@ -202,7 +202,7 @@ $(document).ready(function(){
 		var img = $("<img />",{src:hand[0].pic,class:"hit", width:75, height:100});	
 		$("#dcards").append(img);
 	}
-		if (dealer.handValue > 21) {	
+		if (dealer.handValue > 21 && player.handValue < 22) {	
 				alert("dealer bust yesssssssaahhhh");	
 				var gain = parseInt(player.currentBet);
 				gainMoney(gain);
